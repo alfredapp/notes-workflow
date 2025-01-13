@@ -351,29 +351,6 @@ JSON.stringify({ cache: { seconds: 300, loosereload: true }, items: sfItems })</
 		<dict>
 			<key>config</key>
 			<dict>
-				<key>argumenttype</key>
-				<integer>0</integer>
-				<key>keyword</key>
-				<string>{var:new_note_keyword}</string>
-				<key>skipuniversalaction</key>
-				<true/>
-				<key>subtext</key>
-				<string>Create note titled “{query}”</string>
-				<key>text</key>
-				<string>Make New Note</string>
-				<key>withspace</key>
-				<true/>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.input.keyword</string>
-			<key>uid</key>
-			<string>FC435CEF-F487-4965-B6B9-777B08CFD7D2</string>
-			<key>version</key>
-			<integer>1</integer>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
 				<key>behaviour</key>
 				<integer>1</integer>
 				<key>fontmode</key>
@@ -478,6 +455,29 @@ function run(argv) {
 		<dict>
 			<key>config</key>
 			<dict>
+				<key>argumenttype</key>
+				<integer>0</integer>
+				<key>keyword</key>
+				<string>{var:new_note_keyword}</string>
+				<key>skipuniversalaction</key>
+				<true/>
+				<key>subtext</key>
+				<string>Create note titled “{query}”</string>
+				<key>text</key>
+				<string>Make New Note</string>
+				<key>withspace</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.keyword</string>
+			<key>uid</key>
+			<string>FC435CEF-F487-4965-B6B9-777B08CFD7D2</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
 				<key>argument</key>
 				<string></string>
 				<key>passthroughargument</key>
@@ -503,7 +503,7 @@ Search notes via the `ns` keyword.
 
 ![Searching notes](images/about/search.png)
 
-* &lt;kbd&gt;↩&lt;/kbd&gt; Open note in Notes.app
+* &lt;kbd&gt;↩&lt;/kbd&gt; Open note in the Notes app.
 * &lt;kbd&gt;⌃&lt;/kbd&gt;&lt;kbd&gt;↩&lt;/kbd&gt; Delete note.
 * &lt;kbd&gt;⌘&lt;/kbd&gt;&lt;kbd&gt;⌥&lt;/kbd&gt;&lt;kbd&gt;⌃&lt;/kbd&gt;&lt;kbd&gt;↩&lt;/kbd&gt; Force cache flush.
 
