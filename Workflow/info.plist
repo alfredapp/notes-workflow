@@ -250,21 +250,18 @@ function envVar(varName) {
 const allNotes = Application("Notes").notes()
 const ignoredFolders = envVar("ignored_folders").split("\n")
 
-const sfItems = allNotes.flatMap(note =&gt; {
-  const name = note.name()
-  const folder = note.container().name()
-  const id = note.id()
-  const contents = note.plaintext().replaceAll("\n", " ")
-  const locked = note.passwordProtected()
+const sfItems = allNotes.flatMap(noteReference =&gt; {
+  const note = noteReference.properties()
+  const folder = note.container.name()
 
   if (ignoredFolders.find(folderName =&gt; folderName === folder)) return []
 
   return {
-    uid: name + " " + folder,
-    title: locked ? "🔒" + name : name,
+    uid: note.id,
+    title: note.passwordProtected ? "🔒" + note.name : note.name,
     subtitle: folder,
-    arg: id,
-    match: name + " " + folder + " " + contents
+    arg: note.id,
+    match: folder + " " + note.name + " " + note.plaintext
   }
 })
 
