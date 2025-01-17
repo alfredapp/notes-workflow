@@ -1,0 +1,31 @@
+#!/usr/bin/osascript -l JavaScript
+
+// Helpers
+function envVar(varName) {
+  return $.NSProcessInfo
+    .processInfo
+    .environment
+    .objectForKey(varName).js
+}
+
+// Main
+const allNotes = Application("Notes").notes()
+const ignoredFolders = envVar("ignored_folders").split("\n")
+
+const sfItems = allNotes.flatMap(noteReference => {
+  const note = noteReference.properties()
+  const folder = note.container.name()
+
+  if (ignoredFolders.find(folderName => folderName === folder)) return []
+
+  return {
+    uid: note.id,
+    title: note.passwordProtected ? "🔒" + note.name : note.name,
+    subtitle: folder,
+    arg: note.id,
+    match: folder + " " + note.name + " " + note.plaintext
+  }
+})
+
+// Output JSON
+JSON.stringify({ cache: { seconds: 300, loosereload: true }, items: sfItems })

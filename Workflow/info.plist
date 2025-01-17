@@ -10,7 +10,7 @@
 		<array>
 			<dict>
 				<key>destinationuid</key>
-				<string>76CAFED4-CFC0-4E89-B768-6DF776E119E9</string>
+				<string>219E1723-ECE3-4055-8ED5-DDB5A8413CC0</string>
 				<key>modifiers</key>
 				<integer>0</integer>
 				<key>modifiersubtext</key>
@@ -23,7 +23,30 @@
 		<array>
 			<dict>
 				<key>destinationuid</key>
-				<string>76CAFED4-CFC0-4E89-B768-6DF776E119E9</string>
+				<string>219E1723-ECE3-4055-8ED5-DDB5A8413CC0</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
+		<key>219E1723-ECE3-4055-8ED5-DDB5A8413CC0</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>F614E007-E2C0-4CC6-8658-98ADC7175B55</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>destinationuid</key>
+				<string>18947147-6454-4699-87F1-C2657E18C435</string>
 				<key>modifiers</key>
 				<integer>0</integer>
 				<key>modifiersubtext</key>
@@ -82,7 +105,7 @@
 		<array>
 			<dict>
 				<key>destinationuid</key>
-				<string>76CAFED4-CFC0-4E89-B768-6DF776E119E9</string>
+				<string>219E1723-ECE3-4055-8ED5-DDB5A8413CC0</string>
 				<key>modifiers</key>
 				<integer>0</integer>
 				<key>modifiersubtext</key>
@@ -154,6 +177,26 @@
 	<string>Notes</string>
 	<key>objects</key>
 	<array>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>tasksettings</key>
+				<dict>
+					<key>target_path</key>
+					<string>{const:alfred_workflow_cache}/state.txt</string>
+					<key>use_finder</key>
+					<false/>
+				</dict>
+				<key>taskuid</key>
+				<string>com.alfredapp.automation.core/files-and-folders/path.trash</string>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.automation.task</string>
+			<key>uid</key>
+			<string>F614E007-E2C0-4CC6-8658-98ADC7175B55</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
 		<dict>
 			<key>config</key>
 			<dict>
@@ -238,35 +281,26 @@
 				<key>runningsubtext</key>
 				<string>Collecting notes…</string>
 				<key>script</key>
-				<string>// Helpers
-function envVar(varName) {
-  return $.NSProcessInfo
-    .processInfo
-    .environment
-    .objectForKey(varName).js
+				<string>readonly cache_file="${alfred_workflow_cache}/cache.json"
+readonly state_file="${alfred_workflow_cache}/state.txt"
+
+# Helper to show results and exit
+function show_data {
+  &lt; "${cache_file}"
+  exit 0
 }
 
-// Main
-const allNotes = Application("Notes").notes()
-const ignoredFolders = envVar("ignored_folders").split("\n")
+# Get latest state
+readonly state="$(osascript -l JavaScript -e 'Application("Notes").notes[0].properties()')"
 
-const sfItems = allNotes.flatMap(noteReference =&gt; {
-  const note = noteReference.properties()
-  const folder = note.container.name()
+# Exit early if state has not changed
+[[ "${state}" == "$(&lt; "${state_file}")" ]] &amp;&amp; show_data
 
-  if (ignoredFolders.find(folderName =&gt; folderName === folder)) return []
-
-  return {
-    uid: note.id,
-    title: note.passwordProtected ? "🔒" + note.name : note.name,
-    subtitle: folder,
-    arg: note.id,
-    match: folder + " " + note.name + " " + note.plaintext
-  }
-})
-
-// Output JSON
-JSON.stringify({ cache: { seconds: 300, loosereload: true }, items: sfItems })</string>
+# Update cache and state
+mkdir -p "${alfred_workflow_cache}"
+./get-notes &gt; "${cache_file}"
+echo "${state}" &gt; "${state_file}"
+show_data</string>
 				<key>scriptargtype</key>
 				<integer>1</integer>
 				<key>scriptfile</key>
@@ -278,7 +312,7 @@ JSON.stringify({ cache: { seconds: 300, loosereload: true }, items: sfItems })</
 				<key>title</key>
 				<string>Search Notes</string>
 				<key>type</key>
-				<integer>7</integer>
+				<integer>11</integer>
 				<key>withspace</key>
 				<true/>
 			</dict>
@@ -333,7 +367,7 @@ JSON.stringify({ cache: { seconds: 300, loosereload: true }, items: sfItems })</
 			<key>type</key>
 			<string>alfred.workflow.action.script</string>
 			<key>uid</key>
-			<string>76CAFED4-CFC0-4E89-B768-6DF776E119E9</string>
+			<string>18947147-6454-4699-87F1-C2657E18C435</string>
 			<key>version</key>
 			<integer>2</integer>
 		</dict>
@@ -341,7 +375,38 @@ JSON.stringify({ cache: { seconds: 300, loosereload: true }, items: sfItems })</
 			<key>type</key>
 			<string>alfred.workflow.utility.junction</string>
 			<key>uid</key>
+			<string>219E1723-ECE3-4055-8ED5-DDB5A8413CC0</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>type</key>
+			<string>alfred.workflow.utility.junction</string>
+			<key>uid</key>
 			<string>021446E7-D0A0-446F-BF2A-8237DCF82771</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>argumenttype</key>
+				<integer>0</integer>
+				<key>keyword</key>
+				<string>{var:new_note_keyword}</string>
+				<key>skipuniversalaction</key>
+				<true/>
+				<key>subtext</key>
+				<string>Create note titled “{query}”</string>
+				<key>text</key>
+				<string>Make New Note</string>
+				<key>withspace</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.keyword</string>
+			<key>uid</key>
+			<string>FC435CEF-F487-4965-B6B9-777B08CFD7D2</string>
 			<key>version</key>
 			<integer>1</integer>
 		</dict>
@@ -452,29 +517,6 @@ function run(argv) {
 		<dict>
 			<key>config</key>
 			<dict>
-				<key>argumenttype</key>
-				<integer>0</integer>
-				<key>keyword</key>
-				<string>{var:new_note_keyword}</string>
-				<key>skipuniversalaction</key>
-				<true/>
-				<key>subtext</key>
-				<string>Create note titled “{query}”</string>
-				<key>text</key>
-				<string>Make New Note</string>
-				<key>withspace</key>
-				<true/>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.input.keyword</string>
-			<key>uid</key>
-			<string>FC435CEF-F487-4965-B6B9-777B08CFD7D2</string>
-			<key>version</key>
-			<integer>1</integer>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
 				<key>argument</key>
 				<string></string>
 				<key>passthroughargument</key>
@@ -518,12 +560,28 @@ Configure the [Hotkeys](https://www.alfredapp.com/help/workflows/triggers/hotkey
 			<key>ypos</key>
 			<real>345</real>
 		</dict>
+		<key>18947147-6454-4699-87F1-C2657E18C435</key>
+		<dict>
+			<key>note</key>
+			<string>Flush cache</string>
+			<key>xpos</key>
+			<real>905</real>
+			<key>ypos</key>
+			<real>205</real>
+		</dict>
 		<key>2147E2B1-6709-40D6-8EC6-F626C40612D7</key>
 		<dict>
 			<key>xpos</key>
 			<real>490</real>
 			<key>ypos</key>
 			<real>205</real>
+		</dict>
+		<key>219E1723-ECE3-4055-8ED5-DDB5A8413CC0</key>
+		<dict>
+			<key>xpos</key>
+			<real>805</real>
+			<key>ypos</key>
+			<real>235</real>
 		</dict>
 		<key>3D6923D0-3ECA-4EA0-8413-38A266E560CA</key>
 		<dict>
@@ -538,15 +596,6 @@ Configure the [Hotkeys](https://www.alfredapp.com/help/workflows/triggers/hotkey
 			<real>265</real>
 			<key>ypos</key>
 			<real>65</real>
-		</dict>
-		<key>76CAFED4-CFC0-4E89-B768-6DF776E119E9</key>
-		<dict>
-			<key>note</key>
-			<string>Flush cache</string>
-			<key>xpos</key>
-			<real>870</real>
-			<key>ypos</key>
-			<real>205</real>
 		</dict>
 		<key>7F63EE2D-456F-430A-A305-DCD2CDC8EF81</key>
 		<dict>
@@ -586,6 +635,15 @@ Configure the [Hotkeys](https://www.alfredapp.com/help/workflows/triggers/hotkey
 			<real>80</real>
 			<key>ypos</key>
 			<real>425</real>
+		</dict>
+		<key>F614E007-E2C0-4CC6-8658-98ADC7175B55</key>
+		<dict>
+			<key>note</key>
+			<string>Reset state</string>
+			<key>xpos</key>
+			<real>905</real>
+			<key>ypos</key>
+			<real>65</real>
 		</dict>
 		<key>FC435CEF-F487-4965-B6B9-777B08CFD7D2</key>
 		<dict>
