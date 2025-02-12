@@ -28,4 +28,6 @@ const sfItems = allNotes.flatMap(noteReference => {
 })
 
 // Output JSON
-JSON.stringify({ cache: { seconds: 300, loosereload: true }, items: sfItems })
+sfItems.length > 0 ?
+  JSON.stringify({ cache: { seconds: 300, loosereload: true }, items: sfItems }) :
+  JSON.stringify({ items: [{ title: "No Notes Found", subtitle: "Ensure you have not ignored all folders in the configuration", valid: false }] })

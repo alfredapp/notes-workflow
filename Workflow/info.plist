@@ -291,7 +291,8 @@ function show_data {
 }
 
 # Get latest state
-readonly state="$(osascript -l JavaScript -e 'Application("Notes").notes[0].properties()')"
+readonly latest_note="$(osascript -l JavaScript -e 'Application("Notes").notes[0].properties()')"
+readonly state="${latest_note:-$(uuidgen)}"
 
 # Exit early if state has not changed
 [[ "${state}" == "$(&lt; "${state_file}")" ]] &amp;&amp; show_data
@@ -740,6 +741,8 @@ Configure the [Hotkeys](https://www.alfredapp.com/help/workflows/triggers/hotkey
 			<string>ignored_folders</string>
 		</dict>
 	</array>
+	<key>variablesdontexport</key>
+	<array/>
 	<key>version</key>
 	<string>2025.3</string>
 	<key>webaddress</key>
