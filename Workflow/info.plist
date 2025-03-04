@@ -744,7 +744,7 @@ Configure the [Hotkeys](https://www.alfredapp.com/help/workflows/triggers/hotkey
 	<key>variablesdontexport</key>
 	<array/>
 	<key>version</key>
-	<string>2025.5</string>
+	<string>2025.6</string>
 	<key>webaddress</key>
 	<string>https://github.com/alfredapp/notes-workflow/</string>
 </dict>
