@@ -10,23 +10,23 @@ function envVar(varName) {
 
 // Main
 const ignoredFolders = envVar("ignored_folders").split("\n")
-const unfilteredFolders = Application("Notes").folders()
-const allFolders = unfilteredFolders.filter(unfiltered => !ignoredFolders.some(ignored => ignored === unfiltered.name()))
-const allNotes = allFolders.flatMap(folder => folder.notes())
 
-const sfItems = allNotes.flatMap(noteReference => {
-  const note = noteReference.properties()
-  const folder = note.container.name()
+const sfItems = Application("Notes").folders().flatMap(folderReference => {
+  const folderName = folderReference.name()
 
-  if (ignoredFolders.find(folderName => folderName === folder)) return []
+  if (ignoredFolders.find(ignoredFolder => ignoredFolder === folderName)) return []
 
-  return {
-    uid: note.id,
-    title: note.passwordProtected ? "🔒" + note.name : note.name,
-    subtitle: folder,
-    arg: note.id,
-    match: folder + " " + note.name + " " + note.plaintext
-  }
+  return folderReference.notes().map(noteReference => {
+    const note = noteReference.properties()
+
+    return {
+      uid: note.id,
+      title: note.passwordProtected ? "🔒" + note.name : note.name,
+      subtitle: folderName,
+      arg: note.id,
+      match: folderName + " " + note.name + " " + note.plaintext
+    }
+  })
 })
 
 // Output JSON
