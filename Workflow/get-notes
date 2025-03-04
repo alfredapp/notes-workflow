@@ -9,8 +9,10 @@ function envVar(varName) {
 }
 
 // Main
-const allNotes = Application("Notes").notes()
 const ignoredFolders = envVar("ignored_folders").split("\n")
+const unfilteredFolders = Application("Notes").folders()
+const allFolders = unfilteredFolders.filter(unfiltered => !ignoredFolders.some(ignored => ignored === unfiltered.name()))
+const allNotes = allFolders.flatMap(folder => folder.notes())
 
 const sfItems = allNotes.flatMap(noteReference => {
   const note = noteReference.properties()
