@@ -6,7 +6,7 @@ Be patient while the cache builds. The more notes you have and the larger they a
 
 ### Can I get a link to a note?
 
-Unfortunately, there’s no method to do so programatically via the AppleScript API. It should be possible with GUI automation or parsing the Notes database, but those solutions are unofficial and prone to break when Apple makes a change.
+There’s no method to do so programatically via the AppleScript API. It should be possible by parsing the database, but that solution is unofficial and prone to break when Apple makes a change. It is thus not planned at this moment.
 
 ### How do I report an issue?
 
