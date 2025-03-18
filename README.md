@@ -14,8 +14,12 @@ Search notes via the `ns` keyword.
 * <kbd>⌃</kbd><kbd>↩&#xFE0E;</kbd> Delete note.
 * <kbd>⌘</kbd><kbd>⌥</kbd><kbd>⌃</kbd><kbd>↩&#xFE0E;</kbd> Force cache flush.
 
-Create a new quick note from within Alfred via the `nn` keyword.
+Create a new note from within Alfred via the `nn` keyword.
 
 ![Creating new note](Workflow/images/about/new.png)
+
+Quickly open the last modified note via the `nl` keyword.
+
+![Opening last modified note](Workflow/images/about/last.png)
 
 Configure the [Hotkeys](https://www.alfredapp.com/help/workflows/triggers/hotkey/) for faster triggering.
