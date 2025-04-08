@@ -444,15 +444,15 @@ function show_data {
 }
 
 # Get latest state
-readonly latest_note="$(osascript -l JavaScript -e 'Application("Notes").notes[0].properties()')"
-readonly state="${latest_note:-$(uuidgen)}"
+readonly anchor="$(osascript -l JavaScript -e 'Application("Notes").notes[0].properties()')"
+readonly state="${anchor:-$(uuidgen)}"
 
 # Exit early if state has not changed
 [[ "${state}" == "$(&lt; "${state_file}")" ]] &amp;&amp; show_data
 
 # Update cache and state
 mkdir -p "${alfred_workflow_cache}"
-./get-notes &gt; "${cache_file}"
+./get-data &gt; "${cache_file}"
 echo "${state}" &gt; "${state_file}"
 show_data</string>
 				<key>scriptargtype</key>
