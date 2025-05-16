@@ -439,21 +439,25 @@ readonly state_file="${alfred_workflow_cache}/state.txt"
 
 # Helper to show results and exit
 function show_data {
-  &lt; "${cache_file}"
-  exit 0
+  &lt; "${cache_file}" &amp;&amp; exit 0
+
+  # If cache somehow failed to load, show message and delete state
+  echo '{ "items": [{ "title": "Unable to Load Results",
+    "subtitle": "Open the debugger and try again",
+    "valid": false }] }'
+  rm -f "${state_file}"
+  exit 1
 }
 
 # Get latest state
-readonly anchor="$(osascript -l JavaScript -e 'Application("Notes").notes[0].properties()')"
-readonly state="${anchor:-$(uuidgen)}"
+readonly state="$(osascript -l JavaScript -e 'Application("Notes").notes[0].properties()' || uuidgen)"
 
 # Exit early if state has not changed
 [[ "${state}" == "$(&lt; "${state_file}")" ]] &amp;&amp; show_data
 
 # Update cache and state
 mkdir -p "${alfred_workflow_cache}"
-./get-data &gt; "${cache_file}"
-echo "${state}" &gt; "${state_file}"
+./get-data &gt; "${cache_file}" &amp;&amp; echo "${state}" &gt; "${state_file}"
 show_data</string>
 				<key>scriptargtype</key>
 				<integer>1</integer>
