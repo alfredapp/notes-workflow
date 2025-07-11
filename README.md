@@ -10,9 +10,9 @@ Search notes via the `ns` keyword.
 
 ![Searching notes](Workflow/images/about/search.png)
 
-* <kbd>↩&#xFE0E;</kbd> Open note in the Notes app.
-* <kbd>⌃</kbd><kbd>↩&#xFE0E;</kbd> Delete note.
-* <kbd>⌘</kbd><kbd>⌥</kbd><kbd>⌃</kbd><kbd>↩&#xFE0E;</kbd> Force cache flush.
+* <kbd>↩</kbd> Open note in the Notes app.
+* <kbd>⌃</kbd><kbd>↩</kbd> Delete note.
+* <kbd>⌘</kbd><kbd>⌥</kbd><kbd>⌃</kbd><kbd>↩</kbd> Force cache flush.
 
 Create a new note from within Alfred via the `nn` keyword.
 
