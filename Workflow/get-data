@@ -25,7 +25,8 @@ const sfItems = Application("Notes").folders().flatMap(folderReference => {
         arg: note.id(),
         match: folderName + " " + note.name() + " " + note.plaintext()
       }
-    } catch {
+    } catch (error) {
+      console.log(`Error #${error.errorNumber}: ${error.message} at line ${error.line} column ${error.column}`);
       throw `Corrupted note: ${note.name()}. Try editing it and replacing images.`
     }
   })
