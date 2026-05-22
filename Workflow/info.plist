@@ -450,7 +450,7 @@ function show_data {
 }
 
 # Get latest state
-readonly state="$(osascript -l JavaScript -e 'Application("Notes").notes[0].properties()' || uuidgen)"
+readonly state="$(osascript -l JavaScript -e 'const note = Application("Notes").notes[0]; [note.id(), note.modificationDate().toJSON() ]' || uuidgen)"
 
 # Exit early if state has not changed
 [[ "${state}" == "$(&lt; "${state_file}")" ]] &amp;&amp; show_data
