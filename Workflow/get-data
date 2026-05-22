@@ -16,18 +16,28 @@ const sfItems = Application("Notes").folders().flatMap(folderReference => {
 
   if (ignoredFolders.find(ignoredFolder => ignoredFolder === folderName)) return []
 
-  return folderReference.notes().map(note => {
+  return folderReference.notes().map(noteReference => {
     try {
+      const note = noteReference.properties()
+
       return {
-        uid: note.id(),
-        title: note.passwordProtected() ? "🔒" + note.name() : note.name(),
+        uid: note.id,
+        title: note.passwordProtected ? "🔒" + note.name : note.name,
         subtitle: folderName,
-        arg: note.id(),
-        match: folderName + " " + note.name() + " " + note.plaintext()
+        arg: note.id,
+        match: folderName + " " + note.name + " " + note.plaintext
       }
     } catch (error) {
-      console.log(`Error #${error.errorNumber}: ${error.message} at line ${error.line} column ${error.column}`);
-      throw `Corrupted note: ${note.name()}. Try editing it and replacing images.`
+      console.log(`Error #${error.errorNumber}: ${error.message} at line ${error.line} column ${error.column}`)
+      console.log(`Using slower, direct field access on note named: "${noteReference.name()}"`)
+
+      return {
+        uid: noteReference.id(),
+        title: noteReference.passwordProtected() ? "🔒" + noteReference.name() : noteReference.name(),
+        subtitle: folderName,
+        arg: noteReference.id(),
+        match: folderName + " " + noteReference.name() + " " + noteReference.plaintext()
+      }
     }
   })
 })
