@@ -271,7 +271,7 @@ function envVar(varName) {
 // Main
 const ignoredFolders = envVar("ignored_folders").split("\n")
 
-Application("Notes").notes().find(noteReference =&gt; !ignoredFolders.find(ignoredFolder =&gt; ignoredFolder === noteReference.container().name())).id()</string>
+Application("com.apple.Notes").notes().find(noteReference =&gt; !ignoredFolders.find(ignoredFolder =&gt; ignoredFolder === noteReference.container().name())).id()</string>
 				<key>scriptargtype</key>
 				<integer>1</integer>
 				<key>scriptfile</key>
@@ -390,7 +390,7 @@ Application("Notes").notes().find(noteReference =&gt; !ignoredFolders.find(ignor
 				<integer>102</integer>
 				<key>script</key>
 				<string>function run(argv) {
-  Application("Notes").notes.byId(argv[0]).show()
+  Application("com.apple.Notes").notes.byId(argv[0]).show()
 }</string>
 				<key>scriptargtype</key>
 				<integer>1</integer>
@@ -450,7 +450,7 @@ function show_data {
 }
 
 # Get latest state
-readonly state="$(osascript -l JavaScript -e 'Application("Notes").notes[0].properties()' || uuidgen)"
+readonly state="$(osascript -l JavaScript -e 'Application("com.apple.Notes").notes[0].properties()' || uuidgen)"
 
 # Exit early if state has not changed
 [[ "${state}" == "$(&lt; "${state_file}")" ]] &amp;&amp; show_data
@@ -490,7 +490,7 @@ show_data</string>
 				<integer>68</integer>
 				<key>script</key>
 				<string>function run(argv) {
-  Application("Notes").notes.byId(argv[0]).delete()
+  Application("com.apple.Notes").notes.byId(argv[0]).delete()
 }</string>
 				<key>scriptargtype</key>
 				<integer>1</integer>
@@ -650,7 +650,7 @@ show_data</string>
 function run(argv) {
   const title = `&lt;h1&gt;${envVar("note_title")}&lt;/h1&gt;&lt;br&gt;`
   const body = argv[0].replaceAll("\n", "&lt;br&gt;")
-  const notesApp = Application("Notes")
+  const notesApp = Application("com.apple.Notes")
   const folder = notesApp.folders.byName(envVar("new_notes_folder"))
   const newNote = notesApp.Note({ body: title + body })
 

@@ -11,7 +11,7 @@ function envVar(varName) {
 // Main
 const ignoredFolders = envVar("ignored_folders").split("\n")
 
-const sfItems = Application("Notes").folders().flatMap(folderReference => {
+const sfItems = Application("com.apple.Notes").folders().flatMap(folderReference => {
   const folderName = folderReference.name()
 
   if (ignoredFolders.find(ignoredFolder => ignoredFolder === folderName)) return []
