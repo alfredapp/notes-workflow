@@ -10,28 +10,33 @@ function envVar(varName) {
 
 // Main
 const ignoredFolders = envVar("ignored_folders").split("\n")
+const folders = Application("com.apple.Notes").folders
+const folderNames = folders.name()
 
-const sfItems = Application("com.apple.Notes").folders().flatMap(folderReference => {
-  const folderName = folderReference.name()
-
+const sfItems = folders().flatMap((folderReference, folderIndex) => {
+  const folderName = folderNames[folderIndex]
   if (ignoredFolders.find(ignoredFolder => ignoredFolder === folderName)) return []
 
-  return folderReference.notes().map(noteReference => {
-    try {
-      const note = noteReference.properties()
+  const notes = folderReference.notes
+  const ids = notes.id()
+  const names = notes.name()
+  const passwordProtecteds = notes.passwordProtected()
+  const plaintexts = notes.plaintext()
 
-      return {
-        uid: note.id,
-        title: note.passwordProtected ? "🔒" + note.name : note.name,
-        subtitle: folderName,
-        arg: note.id,
-        match: folderName + " " + note.name + " " + note.plaintext
-      }
-    } catch {
-      throw `Corrupted note: ${noteReference.name()}. Try editing it and replacing images.`
+  return ids.map((id, noteIndex) => {
+    const name = names[noteIndex]
+    const passwordProtected = passwordProtecteds[noteIndex]
+    const plaintext = plaintexts[noteIndex]
+
+    return {
+      uid: id,
+      title: passwordProtected ? "🔒" + name : name,
+      subtitle: folderName,
+      arg: id,
+      match: folderName + " " + name + " " + plaintext
     }
-  })
-})
+  }
+)})
 
 // Output JSON
 sfItems.length > 0 ?
